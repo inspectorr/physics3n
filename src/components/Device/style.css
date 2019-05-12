@@ -1,3 +1,18 @@
+#container {
+    position: relative;
+}
+
 canvas {
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*z-index: 0;*/
     border: 1px solid violet;
+}
+
+.control-layer {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
