@@ -13,8 +13,8 @@ class MassInput extends Component {
         <Form
           onSubmit={(ms) => this.props.handleMassEnter(ms.m1, ms.m2)}
           initialValues={{
-            m1: 100,
-            m2: 300,
+            m1: 10,
+            m2: 30,
           }}
         >
           <Row className={'m-1 p-0'}>

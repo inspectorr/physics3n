@@ -3,7 +3,7 @@ import isPointInCircle from "../../../../actions/isPointInCircle";
 export default class Ball {
   static g = 1500;
   static dt = 1/60;
-  a = 0;
+  // a = 0;
   v = 0;
   cx = null;
   cy = null;
@@ -15,7 +15,8 @@ export default class Ball {
     this.phi = initPhi;
     this.offsetX = offsetX;
     this.m = m;
-    // this.beta = 100/(2*m);
+    // this.beta = 0.01/(2*m/1000);
+    this.beta = 1/6;
 
     this.initLeftPoint = {
       x: -this.R,
@@ -50,6 +51,7 @@ export default class Ball {
 
   onDragStart() {
     this.physicsBlocked = true;
+    this.v = 0;
   }
 
   onDrop() {
@@ -57,6 +59,7 @@ export default class Ball {
   }
 
   magnetBlock() {
+    this.v = 0;
     this.physicsBlocked = true;
     this.userBlocked = true;
   }
@@ -69,13 +72,21 @@ export default class Ball {
   update(t) {
     if (this.physicsBlocked) return;
 
-    this.a = -this.omega*Math.sin(this.phi);
-    this.v += this.a*Ball.dt;
-    this.phi += this.v*Ball.dt;
 
-    this.phi *= Math.pow(1.001, -t/1000);
+    const {v, phi, beta, omega} = this;
+
+    this.v = v + (-2*beta*v - omega*Math.sin(phi))*Ball.dt;
+    this.phi = phi + v*Ball.dt;
+
+    // this.a = -this.omega*Math.sin(this.phi);
+    // this.v += this.a*Ball.dt;
+    // this.phi += this.v*Ball.dt;
+    //
+    // this.phi *= Math.pow(1.001, -t/1000);
 
     this.setAngle(this.phi);
+
+    // const {v}
 
     // this.v += (-2*this.beta-this.omega*Math.sin(this.phi))*Ball.dt;
     // this.phi += this.v*Ball.dt;
