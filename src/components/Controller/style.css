@@ -1,0 +1,28 @@
+.Controller {
+    /*background-color: #c7b1ff;*/
+    height: 70px;
+    border-radius: 0.3rem;
+    /*width: 200px;*/
+    padding: 0px 20px;
+}
+
+.Controller .btn {
+    height: 40px;
+    width: 80px;
+    /*width: 70px;*/
+    margin: 0;
+    border: none;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+/*.btn.stop {*/
+/*    background-color: #cc5d61;*/
+/*}*/
+
+/*.btn.stop:hover, .btn.stop:active, .btn.stop:focus {*/
+/*    background-color: #9e494c;*/
+/*}*/
+/*.btn.go {*/
+
+/*}*/

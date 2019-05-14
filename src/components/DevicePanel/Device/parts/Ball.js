@@ -1,4 +1,4 @@
-import isPointInCircle from "../../../actions/isPointInCircle";
+import isPointInCircle from "../../../../actions/isPointInCircle";
 
 export default class Ball {
   static g = 1500;
@@ -22,6 +22,8 @@ export default class Ball {
       y: 0,
     };
 
+    this.boundAngle = Math.atan(this.R/this.L);
+
     this.setAngle(initPhi);
   }
 
@@ -30,7 +32,6 @@ export default class Ball {
   }
 
   setPosition(x, y) {
-    this.block();
     if (this.userBlocked) return;
     const phi = -Math.atan2(y, x-this.offsetX) + Math.PI/2;
     this.setAngle(phi);
@@ -47,11 +48,11 @@ export default class Ball {
     }
   }
 
-  block() {
+  onDragStart() {
     this.physicsBlocked = true;
   }
 
-  unblock() {
+  onDrop() {
     this.physicsBlocked = false;
   }
 
@@ -85,9 +86,19 @@ export default class Ball {
     ctx.beginPath();
     ctx.moveTo(this.offsetX, 0);
     ctx.lineTo(this.cx, this.cy);
+    ctx.lineWidth = 0.7;
     ctx.stroke();
     ctx.closePath();
+
     ctx.arc(this.cx, this.cy, this.R, 0, Math.PI*2);
+
+    const radGrad = ctx.createRadialGradient(this.cx, this.cy, this.R/8, this.cx, this.cy, this.R);
+    radGrad.addColorStop(0, 'rgb(240, 240, 240)');
+    radGrad.addColorStop(0.2, 'rgb(235, 235, 235)');
+    radGrad.addColorStop(1, 'rgb(200, 200, 200)');
+
+    ctx.fillStyle = radGrad;
+
     ctx.fill();
     ctx.restore();
   }
