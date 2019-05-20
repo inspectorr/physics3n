@@ -10,9 +10,9 @@ class DevicePanel extends Component {
   height = 400;
 
   state = {
-    massEntered: false,
-    m1: null,
-    m2: null,
+    massEntered: true,
+    m1: 45,
+    m2: 131,
   };
 
   handleMassEnter = (m1, m2) => {
@@ -35,6 +35,7 @@ class DevicePanel extends Component {
         style={{
           borderColor: colors.background,
           width: this.width,
+          minWidth: this.width,
           height: this.height,
         }}
       >

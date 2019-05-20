@@ -16,7 +16,7 @@ export default class Ball {
     this.offsetX = offsetX;
     this.m = m;
     // this.beta = 0.01/(2*m/1000);
-    this.beta = 1/6;
+    this.beta = 1/10;
 
     this.initLeftPoint = {
       x: -this.R,

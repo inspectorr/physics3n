@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import './style.css';
 import hints from '../hints.js';
-import UserInterface from "./ProtocolPanel";
+import Protocol from "./Protocol";
 import DevicePanel from "./DevicePanel";
 
 class App extends Component {
@@ -25,7 +25,7 @@ class App extends Component {
           <DevicePanel ref={this.devicePanel}/>
           <Col className={"right-panel"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
-            <UserInterface/>
+            <Protocol/>
           </Col>
         </Row>
       </Container>
