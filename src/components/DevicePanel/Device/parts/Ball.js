@@ -1,7 +1,7 @@
 import isPointInCircle from "../../../../actions/isPointInCircle";
 
 export default class Ball {
-  static g = 1500;
+  static g = 2500;
   static dt = 1/60;
   // a = 0;
   v = 0;
@@ -72,24 +72,15 @@ export default class Ball {
   update(t) {
     if (this.physicsBlocked) return;
 
-
     const {v, phi, beta, omega} = this;
 
     this.v = v + (-2*beta*v - omega*Math.sin(phi))*Ball.dt;
     this.phi = phi + v*Ball.dt;
 
-    // this.a = -this.omega*Math.sin(this.phi);
-    // this.v += this.a*Ball.dt;
-    // this.phi += this.v*Ball.dt;
-    //
-    // this.phi *= Math.pow(1.001, -t/1000);
+    this.prevPhi = phi;
 
     this.setAngle(this.phi);
 
-    // const {v}
-
-    // this.v += (-2*this.beta-this.omega*Math.sin(this.phi))*Ball.dt;
-    // this.phi += this.v*Ball.dt;
   }
 
   draw(ctx) {

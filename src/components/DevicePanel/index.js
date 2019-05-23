@@ -7,7 +7,7 @@ import './style.css';
 
 class DevicePanel extends Component {
   width = 800;
-  height = 400;
+  height = 420;
 
   state = {
     massEntered: true,
@@ -25,8 +25,14 @@ class DevicePanel extends Component {
 
   render() {
     const content = this.state.massEntered ?
-      <Device ref={this.device} m1={+this.state.m1} m2={+this.state.m2} width={this.width} height={this.height}/>
-      : <MassInput handleMassEnter={this.handleMassEnter}/>;
+      <Device
+        addDataRow={this.props.addDataRow}
+        ref={this.device}
+        m1={+this.state.m1}
+        m2={+this.state.m2}
+        width={this.width}
+        height={this.height}
+      /> : <MassInput handleMassEnter={this.handleMassEnter}/>;
 
     return (
       <Col

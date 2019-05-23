@@ -1,0 +1,13 @@
+.rt-th {
+    padding: 0 !important;
+    padding-top: 3px !important;
+    /*box-shadow: none !important;*/
+}
+
+.rt-td {
+    text-align: center;
+}
+
+.bold {
+    font-weight: 500;
+}

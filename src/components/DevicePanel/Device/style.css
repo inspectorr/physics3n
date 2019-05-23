@@ -1,15 +1,29 @@
-/*.Device {*/
-/*    border-width: 1.5px;*/
-/*    border-style: solid;*/
-/*    border-radius: 0.3rem;*/
-/*}*/
+.Device {
+    position: relative;
+}
 
-/*.info-panel {*/
-/*    box-shadow: 0px 5px 3px -3px rgba(50, 50, 50, 0.2);*/
-/*    !*border-top-left-radius: 0.3rem;*!*/
-/*    !*border-top-right-radius: 0.3rem;*!*/
-/*}*/
+.stop-balls {
+    width: 100%;
+    position: absolute;
+    bottom: 7px;
+}
 
-/*canvas {*/
+.stop-balls span {
+    font-size: 18px;
+    color: rgba(220,53,69,0.4);
+    transition: color .25s;
+}
 
-/*}*/
+.stop-balls span:hover {
+    cursor: pointer;
+    color: rgba(220,53,69,0.76);
+}
+
+.unselectable {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently                          not supported by any browser */
+}

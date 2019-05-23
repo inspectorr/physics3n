@@ -16,6 +16,8 @@ class Device extends Component {
   magnetSide = 50;
   ballBoundAngle = Math.atan(this.ballRadius/this.threadLength);
 
+  static defaultActionsToTrack = [...Array(3)].fill(false);
+
   state = {
     balls: null,
     magnet: null,
@@ -24,6 +26,8 @@ class Device extends Component {
     clientY: null,
     dragging: false,
     magnetTurnedOn: false,
+    actionsToTrack: Device.defaultActionsToTrack.slice(),
+    angleTracking: false,
   };
 
   componentDidMount() {
@@ -108,6 +112,8 @@ class Device extends Component {
     this.state.magnet.userUnblock();
     this.state.balls[0].magnetUnblock();
     this.setState({magnetTurnedOn: false});
+    //
+    this.completeActionToTrack('go');
   };
 
   static checkBallCollision(ball1, ball2) {
@@ -126,6 +132,42 @@ class Device extends Component {
     return magnet.phi + magnet.boundAngle >= ball.phi - ball.boundAngle*2;
   }
 
+  completeActionToTrack(key) {
+    const actionsToTrack = this.state.actionsToTrack.slice();
+
+    const actionLiterals = ['magnet', 'go', 'hit'];
+    const index = actionLiterals.indexOf(key);
+    // console.log(index);
+    if (actionsToTrack[index]) return;
+
+    for (let i = 0; i < index; i++) {
+      if (!actionsToTrack[i]) return;
+    }
+
+    actionsToTrack[index] = true;
+
+    this.setState({actionsToTrack});
+    console.log(actionsToTrack);
+  }
+
+  checkActionsCompleted() {
+    return !this.state.actionsToTrack.includes(false);
+  }
+
+  resetActionsToTrack() {
+    const actionsToTrack = Device.defaultActionsToTrack.slice();
+    this.setState({actionsToTrack});
+  }
+
+  startAngleTracking() {
+    this.setState({angleTracking: true});
+  }
+
+  stopAngleTracking() {
+    this.setState({angleTracking: false});
+    this.resetActionsToTrack();
+  }
+
   update(t) {
     const {clientX, clientY, mouseDown} = this.state;
 
@@ -134,6 +176,7 @@ class Device extends Component {
 
     if (Device.checkBallCollision(balls[0], balls[1])) {
       Device.handleBallCollision(balls[0], balls[1]);
+      this.completeActionToTrack('hit');
     }
 
     let hovering = false;
@@ -146,6 +189,15 @@ class Device extends Component {
     if (this.state.magnetTurnedOn && Device.checkMagnetAndBallRightCollision(magnet, balls[0])) {
       balls[0].setAngle(magnet.ballCollisionRightAngle);
       balls[0].magnetBlock();
+      this.completeActionToTrack('magnet');
+    }
+
+    if (this.checkActionsCompleted()) this.startAngleTracking();
+
+    if (this.state.angleTracking && balls[1].phi < balls[1].prevPhi) {
+      // alert(balls[1].prevPhi);
+      this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].prevPhi);
+      this.stopAngleTracking();
     }
 
     balls.forEach(ball => {
@@ -180,27 +232,38 @@ class Device extends Component {
 
   render() {
     return (
-      <canvas ref={"canvas"} width={this.width} height={this.height}>HTML5 support is required to run this app</canvas>
+      <div className={'Device'}>
+        <canvas ref={"canvas"} width={this.width} height={this.height}>HTML5 support is required to run this app</canvas>
+        <Col className={'unselectable m-0 p-0 text-center stop-balls'}><span onClick={this.stopBalls}>Остановить</span></Col>
+      </div>
     );
+  }
+
+  stopBalls = () => {
+    this.state.balls.forEach(ball => {
+      if (ball.physicsBlocked || ball.userBlocked) return;
+      ball.setAngle(0);
+      ball.v = 0
+    });
   }
 }
 
-const TestPanel = (props) => {
-  return (
-    <Row>
-      {props.balls && props.balls.map((ball, i) => {
-        return (
-          <Col>
-            <Col>{`ball${i} a: ${ball.a.toFixed(2)}`}</Col>
-            <Col>{`ball${i} v: ${ball.v.toFixed(2)}`}</Col>
-            <Col>{`ball${i} phi: ${(ball.phi/Math.PI*180).toFixed(2)}grad`}</Col>
-            {/*<Col>{`ball${i} cx: ${ball.cx.toFixed(2)}`}</Col>*/}
-            {/*<Col>{`ball${i} cy: ${ball.cy.toFixed(2)}`}</Col>*/}
-          </Col>
-        );
-      })}
-    </Row>
-  );
-};
+// const TestPanel = (props) => {
+//   return (
+//     <Row>
+//       {props.balls && props.balls.map((ball, i) => {
+//         return (
+//           <Col>
+//             <Col>{`ball${i} a: ${ball.a.toFixed(2)}`}</Col>
+//             <Col>{`ball${i} v: ${ball.v.toFixed(2)}`}</Col>
+//             <Col>{`ball${i} phi: ${(ball.phi/Math.PI*180).toFixed(2)}grad`}</Col>
+//             {/*<Col>{`ball${i} cx: ${ball.cx.toFixed(2)}`}</Col>*/}
+//             {/*<Col>{`ball${i} cy: ${ball.cy.toFixed(2)}`}</Col>*/}
+//           </Col>
+//         );
+//       })}
+//     </Row>
+//   );
+// };
 
 export default Device;

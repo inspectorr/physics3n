@@ -8,10 +8,22 @@ import './style.css';
 import hints from '../hints.js';
 import Protocol from "./Protocol";
 import DevicePanel from "./DevicePanel";
+import getDataRow from "../actions/getDataRow";
 
 class App extends Component {
+  static N = 5;
+
   state = {
     stage: 0,
+    data: [],
+  };
+
+  addDataRow = (a0, a2) => {
+    const data = this.state.data.slice();
+    const row = getDataRow(a0, a2);
+    if (data.length === 5) data.shift();
+    data.push(row);
+    this.setState({data});
   };
 
   devicePanel = React.createRef();
@@ -20,13 +32,15 @@ class App extends Component {
 
   render() {
     return (
-      <Container className={"mt-3"}>
+      <Container className={"mt-3 p-0"}>
         <Row className={"d-flex justify-content-center flex-nowrap"}>
-          <DevicePanel ref={this.devicePanel}/>
+          <DevicePanel ref={this.devicePanel} addDataRow={this.addDataRow}/>
           <Col className={"right-panel"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
-            <Protocol/>
           </Col>
+        </Row>
+        <Row className={"bottom-panel d-flex justify-content-center flex-nowrap"}>
+          <Protocol data={this.state.data}/>
         </Row>
       </Container>
     );
