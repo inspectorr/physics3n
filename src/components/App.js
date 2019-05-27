@@ -9,6 +9,19 @@ import hints from '../hints.js';
 import Protocol from "./Protocol";
 import DevicePanel from "./DevicePanel";
 import getDataRow from "../actions/getDataRow";
+import Header from "./Header";
+
+const Info = () => {
+  return (
+    <Col className={'Info p-0 mt-2'}>
+      <Col className={'p-0'}>Константы эксперимента:</Col>
+      <Col className={'p-0'}>L = (23.9 ± 0.1) см</Col>
+      <Col className={'p-0'}>m<sub>1</sub> = (45 ± 1) г</Col>
+      <Col className={'p-0'}>m<sub>2</sub> = (131 ± 1) г</Col>
+      <Col className={'p-0'}>θ<sub>α</sub> = 2.5°</Col>
+    </Col>
+  );
+};
 
 class App extends Component {
   static N = 5;
@@ -32,15 +45,18 @@ class App extends Component {
 
   render() {
     return (
-      <Container className={"mt-3 p-0"}>
-        <Row className={"d-flex justify-content-center flex-nowrap"}>
+      <Container fluid className={"justify-content-center m-0 p-0"}>
+        <Header/>
+        <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"}>
           <DevicePanel ref={this.devicePanel} addDataRow={this.addDataRow}/>
-          <Col className={"right-panel"}>
+          <Col className={"right-panel p-0 m-0"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
+            <Info/>
+            <Protocol data={this.state.data}/>
           </Col>
         </Row>
         <Row className={"bottom-panel d-flex justify-content-center flex-nowrap"}>
-          <Protocol data={this.state.data}/>
+
         </Row>
       </Container>
     );

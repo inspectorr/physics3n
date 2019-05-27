@@ -1,4 +1,18 @@
+.Main {
+    width: 1050px;
+    min-width: 1050px;
+}
+
 .right-panel {
-    max-width: 250px;
+    max-width: 220px;
     /*width: 250px;*/
+    position: relative;
+}
+
+.Header {
+    font-size: 28px;
+}
+
+.Info {
+    font-size: 17px;
 }

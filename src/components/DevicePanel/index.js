@@ -6,8 +6,8 @@ import colors from "../../colors.js";
 import './style.css';
 
 class DevicePanel extends Component {
-  width = 800;
-  height = 420;
+  width = 815;
+  height = 440;
 
   state = {
     massEntered: true,

@@ -2,7 +2,7 @@ import isPointInCircle from "../../../../actions/isPointInCircle";
 
 export default class Ball {
   static g = 2500;
-  static dt = 1/60;
+  static dt = 0.02;
   // a = 0;
   v = 0;
   cx = null;
@@ -74,6 +74,10 @@ export default class Ball {
 
     const {v, phi, beta, omega} = this;
 
+    // this.a = -omega*Math.sin(this.phi);
+    // this.v +=  this.a*Ball.dt;
+    // this.phi += this.v*Ball.dt;
+
     this.v = v + (-2*beta*v - omega*Math.sin(phi))*Ball.dt;
     this.phi = phi + v*Ball.dt;
 
@@ -96,8 +100,8 @@ export default class Ball {
 
     const radGrad = ctx.createRadialGradient(this.cx, this.cy, this.R/8, this.cx, this.cy, this.R);
     radGrad.addColorStop(0, 'rgb(240, 240, 240)');
-    radGrad.addColorStop(0.2, 'rgb(235, 235, 235)');
-    radGrad.addColorStop(1, 'rgb(200, 200, 200)');
+    radGrad.addColorStop(0.7, 'rgb(188,188,188)');
+    radGrad.addColorStop(1, 'rgb(151,151,151)');
 
     ctx.fillStyle = radGrad;
 

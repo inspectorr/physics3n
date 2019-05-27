@@ -9,6 +9,7 @@
 }
 
 .stop-balls span {
+    font-family: 'Russo One', cursive;
     font-size: 18px;
     color: rgba(220,53,69,0.4);
     transition: color .25s;

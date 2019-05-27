@@ -4,26 +4,44 @@
     border-radius: 0.3rem;
     width: 220px;
     min-width: 220px;
-    padding: 0px 20px;
+    padding: 0 15px;
 }
 
-.Controller .btn {
-    height: 40px;
-    width: 80px;
-    /*width: 70px;*/
-    margin: 0;
-    border: none;
-    font-weight: 800;
-    font-size: 1.2rem;
+.aws-btn span {
+    font-family: 'Russo One', cursive;
 }
 
-/*.btn.stop {*/
-/*    background-color: #cc5d61;*/
-/*}*/
+.aws-btn {
+    width: 85px;
+    text-align: center;
+    line-height: 1;
+    font-size: 22px;
+    font-weight: 500;
+    --button-raise-level: 3px;
+    /*--button-default-font-size: 14px;*/
+    --button-default-border-radius: 5px;
+    /*--button-horizontal-padding: 20px;*/
+    /*--button-hover-pressure: 2;*/
+    /*--transform-speed: 0.185;*/
 
-/*.btn.stop:hover, .btn.stop:active, .btn.stop:focus {*/
-/*    background-color: #9e494c;*/
-/*}*/
-/*.btn.go {*/
+}
 
-/*}*/
+.aws-btn.stop {
+    --button-primary-color: #c41b1b;
+    --button-primary-color-dark: #701010;
+    --button-primary-color-active: #701010;
+    --button-primary-color-light: #ffffff;
+    /*--button-primary-color-hover: #e01f1f;*/
+    --button-primary-color-hover: #c41b1b;
+    --button-primary-border: 0px solid #FFFFFF;
+}
+
+.aws-btn.go {
+    --button-primary-color: #075acc;
+    --button-primary-color-dark: #05336E;
+    --button-primary-color-active: #05336E;
+    --button-primary-color-light: #ffffff;
+    /*--button-primary-color-hover: #0765eb;*/
+    --button-primary-color-hover: #075acc;
+    --button-primary-border: 0px solid #FFFFFF;
+}

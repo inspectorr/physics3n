@@ -1,7 +1,10 @@
+.Protocol {
+    position: absolute;
+    bottom: 0;
+}
+
 .rt-th {
-    padding: 0 !important;
-    padding-top: 3px !important;
-    /*box-shadow: none !important;*/
+    /*font-weight: 500 !important;*/
 }
 
 .rt-td {
@@ -9,5 +12,6 @@
 }
 
 .bold {
+    /*background-color: #05336E;*/
     font-weight: 500;
 }

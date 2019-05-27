@@ -71,6 +71,9 @@ class Device extends Component {
   dragAndDrop = (obj) => {
     if (this.state.dragging || obj.userBlocked) return;
     this.setState({dragging: true});
+    const preventSelect = (e) => {
+      e.preventDefault();
+    };
     const handleMove = () => {
       obj.onDragStart();
       obj.setPosition(this.state.clientX, this.state.clientY);

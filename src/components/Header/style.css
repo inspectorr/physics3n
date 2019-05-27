@@ -1,0 +1,20 @@
+.Header {
+    /*color: #011f4b;*/
+    font-family: 'Russo One', cursive;
+    color: white;
+    width: 1050px;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    /*font-weight: 700;*/
+    height: 50px;
+    font-size: 28px;
+    /*font-size: 32px;*/
+    /*background-color: rgba(0,123,255,0.76);*/
+    background-color: #701010;
+    /*background-color: #05336E;*/
+    /*background: linear-gradient(to bottom left, #855bb3 0%, #dda4ff 100%);*/
+    /*background: linear-gradient(to bottom, #075acc 0%, #05336E 100%);*/
+    -webkit-box-shadow: 0px 1px 8px -3px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 1px 8px -3px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 1px 8px -3px rgba(50, 50, 50, 0.75);
+}
