@@ -46,7 +46,7 @@ class Device extends Component {
       new Ball(this.ballRadius, this.threadLength, 0, this.width/2+this.ballRadius, this.props.m2),
     ];
 
-    const magnet = new Magnet(this.magnetSide, this.magnetSide, this.width/2-this.ballRadius, this.threadLength, this.ballBoundAngle, -Math.PI/3);
+    const magnet = new Magnet(this.magnetSide, this.magnetSide, this.width/2-this.ballRadius, this.threadLength, this.ballBoundAngle, -45*(Math.PI/180));
 
     const disk = new Disk(this.width/2, this.height/6, this.ballRadius, 0, 0);
 

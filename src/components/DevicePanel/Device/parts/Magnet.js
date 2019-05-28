@@ -16,8 +16,7 @@ export default class Magnet {
 
     this.boundAngle = Math.atan(this.width/2/this.L);
     this.ballBoundAngle = ballBoundAngle;
-
-    this.setAngle(initPhi);
+    this.setAngle(initPhi-ballBoundAngle-this.boundAngle);
   }
 
   setAngle(phi) {
