@@ -27,21 +27,25 @@
 }
 
 .aws-btn.stop {
-    --button-primary-color: #c41b1b;
-    --button-primary-color-dark: #701010;
-    --button-primary-color-active: #701010;
+    /*--button-primary-color: #c41b1b;*/
+    --button-primary-color: rgba(220,53,69,1);
+    /*--button-primary-color-dark: #701010;*/
+    --button-primary-color-dark: #8c222c;
+    --button-primary-color-active: #8c222c;
     --button-primary-color-light: #ffffff;
     /*--button-primary-color-hover: #e01f1f;*/
-    --button-primary-color-hover: #c41b1b;
+    --button-primary-color-hover: #dc3545;
     --button-primary-border: 0px solid #FFFFFF;
 }
 
 .aws-btn.go {
-    --button-primary-color: #075acc;
-    --button-primary-color-dark: #05336E;
-    --button-primary-color-active: #05336E;
+    /*--button-primary-color: #075acc;*/
+    --button-primary-color: rgba(0,123,255,1);
+    /*--button-primary-color-dark: #05336E;*/
+    --button-primary-color-dark: #004e9b;
+    --button-primary-color-active: #004e9b;
     --button-primary-color-light: #ffffff;
     /*--button-primary-color-hover: #0765eb;*/
-    --button-primary-color-hover: #075acc;
+    --button-primary-color-hover: #007bff;
     --button-primary-border: 0px solid #FFFFFF;
 }

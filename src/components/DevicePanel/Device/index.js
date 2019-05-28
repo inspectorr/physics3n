@@ -12,7 +12,7 @@ class Device extends Component {
   height = this.props.height;
 
   ballRadius = 25;
-  threadLength = 340;
+  threadLength = 355;
   magnetSide = 50;
   ballBoundAngle = Math.atan(this.ballRadius/this.threadLength);
 

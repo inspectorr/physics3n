@@ -6,7 +6,6 @@ import Image from "react-bootstrap/Image";
 import './style.css';
 
 class Protocol extends Component {
-
   render() {
     // return {a0deg, a2deg, x0, tetaX0, x2, tetaX2, y2, tetaY2, y1, tetaY1, y1h, tetaY1h};
 

@@ -39,6 +39,8 @@ export default class Disk {
     ctx.font = '20px Russo One';
 
     // left angle
+    // ctx.strokeStyle = '#c41b1b';
+    // ctx.fillStyle = '#c41b1b';
     ctx.strokeStyle = 'rgba(220,53,69,0.76)';
     ctx.fillStyle = 'rgba(220,53,69,0.76)';
     ctx.beginPath();
