@@ -20,7 +20,7 @@ class Protocol extends Component {
     textContainers.forEach(blinkText);
 
     function blinkText(container) {
-      container.style.color = 'rgba(0,157,255,0.75)';
+      container.style.color = 'rgba(0,123,255,1)';
       const duration = 1000;
       const one = duration/4;
       let blinking = setInterval(() => {

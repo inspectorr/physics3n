@@ -6,6 +6,7 @@
 }
 
 .Protocol div, .Protocol span, .Protocol sub {
+    font-size: 15px;
     font-family: 'Press Start 2P', cursive !important;
     /*font-family: 'Russo One', cursive;*/
 }
