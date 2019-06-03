@@ -100,9 +100,9 @@ export default class Ball {
     ctx.arc(this.cx, this.cy, this.R, 0, Math.PI*2);
 
     const radGrad = ctx.createRadialGradient(this.cx, this.cy, this.R/8, this.cx, this.cy, this.R);
-    radGrad.addColorStop(0, 'rgb(240, 240, 240)');
-    radGrad.addColorStop(0.7, 'rgb(188,188,188)');
-    radGrad.addColorStop(1, 'rgb(151,151,151)');
+    radGrad.addColorStop(0, 'rgb(255,255,255)');
+    radGrad.addColorStop(0.66, 'rgb(172,172,172)');
+    radGrad.addColorStop(1, 'rgb(103,103,103)');
 
     ctx.fillStyle = radGrad;
 
