@@ -29,7 +29,10 @@ class Controller extends Component {
 
   render() {
     return (
-      <Row className={"Controller mx-auto align-items-center shadow-sm"} style={{backgroundColor: colors.background}}>
+      <div className={"outer d-flex justify-content-start"}>
+      <Row className={"Controller mx-auto align-items-center"} style={{
+        // backgroundColor: colors.background
+      }}>
         <Col className={"d-flex p-0 m-0 justify-content-between"}>
           <AwesomeButton
             className={`stop ${this.state.stop ? 'aws-btn--active' : ''}`}
@@ -49,6 +52,7 @@ class Controller extends Component {
           {/*<Button onClick={this.props.turnOffMagnet} className={"go"}>{"ПУСК"}</Button>*/}
         </Col>
       </Row>
+      </div>
     );
   }
 }

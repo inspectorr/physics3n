@@ -1,14 +1,39 @@
 .Protocol {
     position: absolute;
     bottom: 0;
+    color: white;
+    /*margin-top: -25px;*/
+}
+
+.Protocol div, .Protocol span, .Protocol sub {
+    font-family: 'Press Start 2P', cursive !important;
+    /*font-family: 'Russo One', cursive;*/
+}
+
+.ReactTable {
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .rt-th {
     /*font-weight: 500 !important;*/
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid;
+}
+
+.rt-tr-group {
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .rt-td {
+    min-height: 38px;
     text-align: center;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.rt-noData {
+    background: rgba(0, 0, 0, 0.31) !important;
+    color: white !important;
 }
 
 .bold {

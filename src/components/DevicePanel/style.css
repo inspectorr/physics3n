@@ -1,6 +1,14 @@
 .DevicePanel {
-    border-width: 1.5px;
-    border-style: solid;
+    z-index: 10;
+    /*margin-top: -13px;*/
+    /*border-color: rgba(40, 83, 169, 0.65);*/
+    /*border-width: 2px;*/
+    /*border-style: solid;*/
     border-radius: 0.3rem;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    /*background-color: rgba(41, 79, 255, 0.31);*/
+    /*background: url("../../images/shiphull.jpg");*/
+    /*-webkit-box-shadow: inset 0px 0px 20px 10px rgba(0,0,0,0.9);*/
+    /*-moz-box-shadow: inset 0px 0px 20px 10px rgba(0,0,0,0.9);*/
+    /*box-shadow: inset 0px 0px 20px 10px rgba(0,0,0,0.9);*/
 }

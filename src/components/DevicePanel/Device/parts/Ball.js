@@ -1,7 +1,7 @@
 import isPointInCircle from "../../../../actions/isPointInCircle";
 
 export default class Ball {
-  static g = 2500;
+  static g = 2300;
   static dt = 0.02;
   // a = 0;
   v = 0;
@@ -93,6 +93,7 @@ export default class Ball {
     ctx.moveTo(this.offsetX, 0);
     ctx.lineTo(this.cx, this.cy);
     ctx.lineWidth = 0.7;
+    ctx.strokeStyle = 'white';
     ctx.stroke();
     ctx.closePath();
 

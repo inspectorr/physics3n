@@ -2,61 +2,62 @@ import React, {Component} from 'react';
 import Col from "react-bootstrap/Col";
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
-import Image from "react-bootstrap/Image";
 import './style.css';
 
 class Protocol extends Component {
+  componentDidMount() {
+
+  }
+
+  componentDidUpdate() {
+    const trs = this.refs.protocol.querySelectorAll('.rt-tbody .rt-tr');
+    const N = this.props.data.length;
+    this.blink(trs[N-1]);
+  }
+
+  blink(tr) {
+    const textContainers = tr.querySelectorAll('.rt-td span');
+    textContainers.forEach(blinkText);
+
+    function blinkText(container) {
+      container.style.color = 'rgba(0,157,255,0.75)';
+      const duration = 1000;
+      const one = duration/4;
+      let blinking = setInterval(() => {
+        container.hidden = !container.hidden;
+      }, one);
+      setTimeout(() => {
+        clearInterval(blinking);
+        container.hidden = false;
+        container.style.color = 'white';
+      }, duration)
+    }
+  }
+
   render() {
-    // return {a0deg, a2deg, x0, tetaX0, x2, tetaX2, y2, tetaY2, y1, tetaY1, y1h, tetaY1h};
-
-    // const columns = [
-    //   'N',
-    //   'a0deg',
-    //   'a2deg',
-    //   'x0',
-    //   'tetaX0',
-    //   'x2',
-    //   'tetaX2',
-    //   'y2',
-    //   'tetaY2',
-    //   'y1',
-    //   'tetaY1',
-    //   'y1h',
-    //   'tetaY1h',
-    // ].map((key, i) => {
-    //   // const width = i < 7 ? 60 : 80;
-    //
-    //   return {
-    //     Header: <Image height={85} className={"header-image"} src={require(`../../images/headers/${key}.png`)}/>,
-    //     accessor: key,
-    //     Cell: props => <span className={`number ${key === 'N' ? 'bold' : ''}`}>{key === 'N' ? props.index+1 : props.value.toFixed(3)}</span>,
-    //     width: i === 0 ? 30 : 85,
-    //   };
-    // });
-
     const columns = [
       {
         Header: '№',
         accessor: 'N',
-        Cell: props => <span className={`number bold`}>{props.index+1}</span>,
+        Cell: props => <div><span className={`number bold`}>{props.index+1}</span></div>,
         width: 40,
       },
       {
         Header: <span>α<sub>0</sub></span>,
         accessor: 'a0deg',
-        Cell: props => <span className={`number`}>{props.value.toFixed(1)}</span>,
+        Cell: props => <div><span className={`number`}>{props.value.toFixed(1)}</span></div>,
         width: 90,
       },
       {
         Header: <span>α<sub>2</sub></span>,
         accessor: 'a2deg',
-        Cell: props => <span className={`number`}>{props.value.toFixed(1)}</span>,
+        Cell: props => <div><span className={`number`}>{props.value.toFixed(1)}</span></div>,
         width: 90,
       },
     ];
 
     return (
-      <Col className={"Protocol d-flex px-0 pt-2 justify-content-center"}>
+      <Col ref={"protocol"} className={"Protocol d-flex px-0 pt-2 justify-content-center"}>
         <ReactTable
           data={this.props.data}
           columns={columns}

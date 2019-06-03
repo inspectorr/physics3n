@@ -14,5 +14,20 @@
 }
 
 .Info {
-    font-size: 17px;
+    font-size: 16px;
+    color: white;
+}
+
+.Info div, .Info sub {
+    /*font-family: 'Press Start 2P', cursive !important;*/
+    font-family: 'Russo One', cursive;
+}
+
+body {
+    background-image: url("../images/stars.jpg");
+    -moz-background-size: 100%; /* Firefox 3.6+ */
+    -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+    -o-background-size: 100%; /* Opera 9.6+ */
+    background-size: 100%; /* Современные браузеры */
+    /*background-color: rgb(51, 51, 51);*/
 }

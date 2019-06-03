@@ -109,6 +109,20 @@ export default class Magnet {
     ctx.strokeStyle = 'rgb(99,99,99)';
     ctx.stroke();
 
+    if (this.active) {
+      let radGrad = ctx.createRadialGradient(center.x, center.y, this.height/5, center.x, center.y, this.width*2);
+
+      radGrad.addColorStop(0, 'rgba(239,255,142, 0.5)');
+      radGrad.addColorStop(0.4+0.05*Math.random(), 'rgba(239,255,142, 0.1)');
+      radGrad.addColorStop(0.6, 'rgba(200, 35, 51, 0.05)');
+      radGrad.addColorStop(1, 'rgba(200, 35, 51, 0.005)');
+
+      ctx.fillStyle = radGrad;
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, this.width+20+20*Math.random(), 0, Math.PI*2);
+      ctx.fill();
+    }
+
     ctx.restore();
   }
 }

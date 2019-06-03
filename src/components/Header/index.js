@@ -8,6 +8,7 @@ export default function Header () {
     <Row
       className={"Header mb-3 mx-auto d-flex justify-content-center align-items-center flex-nowrap"}
       style={{
+        zIndex: 20,
         // backgroundColor: colors.background,
       }}
     >

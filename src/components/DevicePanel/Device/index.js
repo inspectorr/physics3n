@@ -11,6 +11,8 @@ class Device extends Component {
   width = this.props.width;
   height = this.props.height;
 
+  topShift = 15;
+
   ballRadius = 25;
   threadLength = 355;
   magnetSide = 50;
@@ -48,7 +50,7 @@ class Device extends Component {
 
     const magnet = new Magnet(this.magnetSide, this.magnetSide, this.width/2-this.ballRadius, this.threadLength, this.ballBoundAngle, -45*(Math.PI/180));
 
-    const disk = new Disk(this.width/2, this.height/6, this.ballRadius, 0, 0);
+    const disk = new Disk(this.width/2, this.height/6, this.ballRadius, 0, 0, this.topShift);
 
     this.setState({ balls, magnet, disk });
   }
@@ -126,8 +128,15 @@ class Device extends Component {
   static handleBallCollision(ball1, ball2) {
     const [m1, v1] = [ball1.m, ball1.v];
     const [m2, v2] = [ball2.m, ball2.v];
-    const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
-    const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
+    // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
+    // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
+
+    const k = 0.95;
+
+    const u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
+    const u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
+
+
     [ball1.v, ball2.v] = [u1, u2];
   }
 
@@ -221,8 +230,10 @@ class Device extends Component {
 
   draw = (t) => {
     if (!this.state.balls || !this.state.magnet) return;
+    this.ctx.save();
 
     this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.translate(0, this.topShift);
 
     this.update(t);
 
@@ -230,13 +241,14 @@ class Device extends Component {
     this.state.balls.forEach(ball => ball.draw(this.ctx));
     this.state.disk.draw(this.ctx);
 
+    this.ctx.restore();
     requestAnimationFrame(this.draw);
   };
 
   render() {
     return (
       <div className={'Device'}>
-        <canvas ref={"canvas"} width={this.width} height={this.height}>HTML5 support is required to run this app</canvas>
+        <canvas ref={"canvas"} width={this.width} height={this.height} style={{zIndex: 1}}>HTML5 support is required to run this app</canvas>
         <Col className={'unselectable m-0 p-0 text-center stop-balls'}><span onClick={this.stopBalls}>Остановить</span></Col>
       </div>
     );

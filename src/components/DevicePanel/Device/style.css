@@ -1,5 +1,13 @@
 .Device {
     position: relative;
+    z-index: 10 !important;
+    margin-top: -25px;
+    /*margin-top: -25px;v*/
+    /*background-color: rgba(172, 207, 255, 0.26);*/
+}
+
+.Device canvas {
+    /*z-index: 10 !important;*/
 }
 
 .stop-balls {
@@ -10,14 +18,16 @@
 
 .stop-balls span {
     font-family: 'Russo One', cursive;
-    font-size: 18px;
-    color: rgba(220,53,69,0.4);
+    /*font-size: 18px;*/
+    font-size: 22px;
+    /*color: rgba(220,53,69,0.4);*/
+    color: rgba(220,53,69,0.5);
     transition: color .25s;
 }
 
 .stop-balls span:hover {
     cursor: pointer;
-    color: rgba(220,53,69,0.76);
+    color: rgba(220,53,69,0.9);
 }
 
 .unselectable {

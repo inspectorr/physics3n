@@ -7,7 +7,7 @@ import './style.css';
 
 class DevicePanel extends Component {
   width = 815;
-  height = 440;
+  height = 460;
 
   state = {
     massEntered: true,
@@ -37,9 +37,10 @@ class DevicePanel extends Component {
     return (
       <Col
         md={'auto'}
-        className={"DevicePanel d-flex align-items-center p-0 shadow-sm"}
+        className={"DevicePanel d-flex align-items-center p-0"}
         style={{
-          borderColor: colors.background,
+          // borderColor: colors.background,
+          // backgroundColor: colors.background,
           width: this.width,
           minWidth: this.width,
           height: this.height,

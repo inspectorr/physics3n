@@ -11,6 +11,8 @@ import DevicePanel from "./DevicePanel";
 import getDataRow from "../actions/getDataRow";
 import Header from "./Header";
 
+document.addEventListener('mousedown', (e) => e.preventDefault());
+
 const Info = () => {
   return (
     <Col className={'Info p-0 mt-2'}>
@@ -47,7 +49,7 @@ class App extends Component {
     return (
       <Container fluid className={"justify-content-center m-0 p-0"}>
         <Header/>
-        <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"}>
+        <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"} style={{height: 435}}>
           <DevicePanel ref={this.devicePanel} addDataRow={this.addDataRow}/>
           <Col className={"right-panel p-0 m-0"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
