@@ -69,6 +69,8 @@ export default class Ball {
     this.userBlocked = false;
   }
 
+  vs = [];
+
   update(t) {
     if (this.physicsBlocked) return;
 
@@ -80,6 +82,14 @@ export default class Ball {
 
     this.v = v + (-2*beta*v - omega*Math.sin(phi))*Ball.dt;
     this.phi = phi + v*Ball.dt;
+
+    this.wasMovingRight = this.isMovingRight;
+    this.isMovingRight = this.prevPhi < this.phi;
+    if (this.wasMovingRight && !this.isMovingRight) {
+      this.maxRightPhi = this.prevPhi;
+    } else if (!this.wasMovingRight && this.isMovingRight) {
+      this.maxLeftPhi = this.prevPhi;
+    }
 
     this.prevPhi = phi;
 

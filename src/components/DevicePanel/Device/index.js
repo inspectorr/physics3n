@@ -6,6 +6,7 @@ import Disk from "./parts/Disk";
 import './style.css';
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import random from "../../../actions/random";
 
 class Device extends Component {
   width = this.props.width;
@@ -132,10 +133,8 @@ class Device extends Component {
     // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
 
     const k = 0.95;
-
-    const u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
-    const u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
-
+    let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
+    let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
 
     [ball1.v, ball2.v] = [u1, u2];
   }
@@ -180,8 +179,32 @@ class Device extends Component {
     this.resetActionsToTrack();
   }
 
-  update(t) {
+  handleMouseActions() {
     const {clientX, clientY, mouseDown} = this.state;
+    const balls = this.state.balls.slice();
+    const { magnet, disk } = this.state;
+
+    let hovering = false;
+
+    if (magnet.pointOver(clientX, clientY)) {
+      hovering = true;
+      if (mouseDown) this.dragAndDrop(magnet);
+    }
+
+    balls.forEach(ball => {
+      if (ball.pointOver(clientX, clientY)) {
+        hovering = true;
+        if (mouseDown) this.dragAndDrop(ball);
+      }
+    });
+
+    if (hovering) this.hoverOn();
+    else this.hoverOff();
+
+  }
+
+  update(t) {
+    // const {clientX, clientY, mouseDown} = this.state;
 
     const balls = this.state.balls.slice();
     const { magnet, disk } = this.state;
@@ -191,12 +214,12 @@ class Device extends Component {
       this.completeActionToTrack('hit');
     }
 
-    let hovering = false;
-
-    if (magnet.pointOver(clientX, clientY)) {
-      hovering = true;
-      if (mouseDown) this.dragAndDrop(magnet);
-    }
+    // let hovering = false;
+    //
+    // if (magnet.pointOver(clientX, clientY)) {
+    //   hovering = true;
+    //   if (mouseDown) this.dragAndDrop(magnet);
+    // }
 
     if (this.state.magnetTurnedOn && Device.checkMagnetAndBallRightCollision(magnet, balls[0])) {
       balls[0].setAngle(magnet.ballCollisionRightAngle);
@@ -206,24 +229,29 @@ class Device extends Component {
 
     if (this.checkActionsCompleted()) this.startAngleTracking();
 
+    // console.log(balls[1].maxPhi);
+
     if (this.state.angleTracking && balls[1].phi < balls[1].prevPhi) {
-      // alert(balls[1].prevPhi);
+      // const phi = balls[1].maxPhi;
+      // console.log(balls[1].maxPhi);
       this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].prevPhi);
       this.stopAngleTracking();
     }
 
     balls.forEach(ball => {
-      if (ball.pointOver(clientX, clientY)) {
-        hovering = true;
-        if (mouseDown) this.dragAndDrop(ball);
-      }
+      // if (ball.pointOver(clientX, clientY)) {
+      //   hovering = true;
+      //   if (mouseDown) this.dragAndDrop(ball);
+      // }
       ball.update(t);
     });
 
-    disk.update(magnet.ballCollisionRightAngle, balls[1].phi);
+    // disk.update(magnet.ballCollisionRightAngle, balls[1].phi);
+    disk.update(balls[0].maxLeftPhi, balls[1].maxRightPhi);
 
-    if (hovering) this.hoverOn();
-    else this.hoverOff();
+    // if (hovering) this.hoverOn();
+    // else this.hoverOff();
+    this.handleMouseActions();
 
     this.setState({balls});
   }

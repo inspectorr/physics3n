@@ -1,3 +1,5 @@
+import random from "./random";
+
 const N = 5;
 const Bpn = 0.51;
 const tetaAlphaDeg = 2.5;
@@ -5,10 +7,6 @@ const tetaAlphaRad = tetaAlphaDeg/180*Math.PI;
 const m1 = 45;
 const m2 = 131;
 const L = 23.9;
-
-function random(start, end) {
-  return start + (end - start)*Math.random();
-}
 
 function error(alphaRad) {
   return alphaRad + tetaAlphaRad*random(-0.5, 0.5);
@@ -18,7 +16,7 @@ export default function (a0, a2) {
   [a0, a2] = [Math.abs(a0), Math.abs(a2)];
 
   // имитация неточности измерений
-  a2 = error(a2);
+  // a2 = error(a2);
 
   const a0deg = a0/Math.PI*180;
   const a2deg = a2/Math.PI*180;
