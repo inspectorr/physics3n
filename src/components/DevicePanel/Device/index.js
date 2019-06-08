@@ -215,11 +215,6 @@ class Device extends Component {
 
     balls.forEach(ball => ball.update());
 
-    if (balls[0].physicsBlocked && balls[0].phi > balls[1]) {
-      console.log(balls[0].phi);
-      balls[1].setUserAngle(balls[0].phi);
-    }
-
     if (Device.checkBallCollision(balls[0], balls[1])) {
       Device.handleBallCollision(balls[0], balls[1]);
       // balls.forEach(ball => ball.update());

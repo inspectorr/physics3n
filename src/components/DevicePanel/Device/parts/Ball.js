@@ -65,9 +65,8 @@ export default class Ball {
   }
 
   setUserAngle(phi) {
-    this.phi = this.prevPhi = phi;
-    this.cx = Math.sin(phi)*this.L + this.offsetX;
-    this.cy = Math.cos(phi)*this.L;
+    this.setAngle(phi);
+    this.v = 0;
     this.maxLeftPhi = this.maxRightPhi = this.phi;
   }
 
