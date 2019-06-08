@@ -48,8 +48,6 @@ class Controller extends Component {
           >
             {"ПУСК"}
           </AwesomeButton>
-
-          {/*<Button onClick={this.props.turnOffMagnet} className={"go"}>{"ПУСК"}</Button>*/}
         </Col>
       </Row>
       </div>

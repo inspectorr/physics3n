@@ -1,3 +1,5 @@
+import formatAngle from "../../../../actions/formatAngle";
+
 export default class Disk {
   constructor(cx, radius, ballRadius, initLeftAngle, initRightAngle, shift) {
     this.cx = cx;
@@ -67,6 +69,6 @@ export default class Disk {
   }
 }
 
-function formatAngle(rad) {
-  return Math.abs(Math.round(rad/Math.PI*180*10)/10).toFixed(1) + '°';
-}
+// function formatAngle(rad) {
+//   return Math.abs(Math.round(rad/Math.PI*180*10)/10).toFixed(1) + '°';
+// }

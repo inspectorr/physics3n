@@ -45,13 +45,13 @@ class Protocol extends Component {
       {
         Header: <span>α<sub>0</sub></span>,
         accessor: 'a0deg',
-        Cell: props => <div><span className={`number`}>{props.value.toFixed(1)}</span></div>,
+        Cell: props => <div><span className={`number`}>{props.value}</span></div>,
         width: 90,
       },
       {
         Header: <span>α<sub>2</sub></span>,
         accessor: 'a2deg',
-        Cell: props => <div><span className={`number`}>{props.value.toFixed(1)}</span></div>,
+        Cell: props => <div><span className={`number`}>{props.value}</span></div>,
         width: 90,
       },
     ];

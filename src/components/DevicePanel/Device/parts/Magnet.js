@@ -1,4 +1,5 @@
 import isPointInPolygon from "../../../../actions/isPointInPolygon";
+import formatAngle from "../../../../actions/formatAngle";
 
 export default class Magnet {
   constructor(width, height, offsetX, L, ballBoundAngle, initPhi) {
@@ -42,10 +43,22 @@ export default class Magnet {
     return isPointInPolygon(x, y, this.position);
   }
 
+  onDragStart(coords) {
+    const {x, y} = coords;
+    this.offsetPhi = this.getPhi(x, y) - this.phi;
+  }
+
+  onDrop() {
+
+  }
+
   setPosition(x, y) {
-    const phi = - Math.atan2(y, x-this.offsetX) + Math.PI/2;
-    // console.log(phi);
-    this.setAngle(phi);
+    const phi = this.getPhi(x, y);
+    this.setAngle(phi-this.offsetPhi);
+  }
+
+  getPhi(x, y) {
+    return -Math.atan2(y, x-this.offsetX) + Math.PI/2;
   }
 
   userBlock() {
@@ -54,14 +67,6 @@ export default class Magnet {
 
   userUnblock() {
     this.userBlocked = false;
-  }
-
-  onDragStart() {
-
-  }
-
-  onDrop() {
-
   }
 
   turnOn() {
@@ -84,6 +89,14 @@ export default class Magnet {
     ctx.lineWidth = 10;
     ctx.strokeStyle = 'rgb(99, 99, 99)';
     ctx.stroke();
+
+    ctx.save();
+    ctx.translate(this.offsetX, 0);
+    ctx.rotate(3*Math.PI/2-this.phi);
+    ctx.font = '24px Russo One';
+    ctx.fillStyle = 'rgba(220,53,69,0.76)';
+    ctx.fillText(formatAngle(this.ballCollisionRightAngle), -150, -15);
+    ctx.restore();
 
     ctx.beginPath();
     ctx.moveTo(points[0].x + center.x, points[0].y + center.y);

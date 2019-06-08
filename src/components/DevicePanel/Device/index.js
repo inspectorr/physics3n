@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import Container from "react-bootstrap/Container";
 import Magnet from "./parts/Magnet";
 import Ball from "./parts/Ball";
 import Disk from "./parts/Disk";
 import './style.css';
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import random from "../../../actions/random";
 
 class Device extends Component {
   width = this.props.width;
@@ -38,16 +35,22 @@ class Device extends Component {
     requestAnimationFrame(this.draw);
   }
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   create() {
     this.ctx = this.refs.canvas.getContext('2d');
-    this.refs.canvas.addEventListener('mousemove', this.onMouseMove);
     this.refs.canvas.addEventListener('mousedown', this.onMouseDown);
-    this.refs.canvas.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
 
     const balls = [
       new Ball(this.ballRadius, this.threadLength, 0, this.width/2-this.ballRadius, this.props.m1),
       new Ball(this.ballRadius, this.threadLength, 0, this.width/2+this.ballRadius, this.props.m2),
     ];
+
+    balls.forEach(ball => ball.reset());
 
     const magnet = new Magnet(this.magnetSide, this.magnetSide, this.width/2-this.ballRadius, this.threadLength, this.ballBoundAngle, -45*(Math.PI/180));
 
@@ -64,6 +67,8 @@ class Device extends Component {
   };
 
   onMouseDown = (event) => {
+    const box = this.refs.canvas.getBoundingClientRect();
+    this.startDragCoords = {x: event.clientX - box.left, y: event.clientY - box.top};
     this.setState({mouseDown: true});
   };
 
@@ -73,22 +78,20 @@ class Device extends Component {
 
   dragAndDrop = (obj) => {
     if (this.state.dragging || obj.userBlocked) return;
+    const box = this.refs.canvas.getBoundingClientRect();
     this.setState({dragging: true});
-    const preventSelect = (e) => {
-      e.preventDefault();
-    };
-    const handleMove = () => {
-      obj.onDragStart();
-      obj.setPosition(this.state.clientX, this.state.clientY);
+    obj.onDragStart(this.startDragCoords);
+    const handleMove = (e) => {
+      obj.setPosition(e.clientX - box.left, e.clientY - box.top);
     };
     const handleDrop = () => {
       obj.onDrop();
-      this.refs.canvas.removeEventListener('mousemove', handleMove);
-      this.refs.canvas.removeEventListener('mouseup', handleDrop);
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleDrop);
       this.setState({dragging: false});
     };
-    this.refs.canvas.addEventListener('mousemove', handleMove);
-    this.refs.canvas.addEventListener('mouseup', handleDrop);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleDrop);
   };
 
   hoverOn = () => {
@@ -97,14 +100,6 @@ class Device extends Component {
 
   hoverOff = () => {
     this.refs.canvas.style.cursor = 'unset';
-  };
-
-  onMagnetUserBlock = () => {
-    this.state.magnet.userBlock();
-  };
-
-  onMagnetUserUnblock = () => {
-    this.state.magnet.userUnblock();
   };
 
   onMagnetTurnOn = () => {
@@ -122,33 +117,12 @@ class Device extends Component {
     this.completeActionToTrack('go');
   };
 
-  static checkBallCollision(ball1, ball2) {
-    return Math.sqrt((ball1.cx-ball2.cx)**2+(ball1.cy-ball2.cy)**2) <= ball1.R + ball2.R;
-  }
-
-  static handleBallCollision(ball1, ball2) {
-    const [m1, v1] = [ball1.m, ball1.v];
-    const [m2, v2] = [ball2.m, ball2.v];
-    // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
-    // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
-
-    const k = 0.95;
-    let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
-    let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
-
-    [ball1.v, ball2.v] = [u1, u2];
-  }
-
-  static checkMagnetAndBallRightCollision(magnet, ball) {
-    return magnet.phi + magnet.boundAngle >= ball.phi - ball.boundAngle*2;
-  }
-
   completeActionToTrack(key) {
     const actionsToTrack = this.state.actionsToTrack.slice();
 
     const actionLiterals = ['magnet', 'go', 'hit'];
     const index = actionLiterals.indexOf(key);
-    // console.log(index);
+
     if (actionsToTrack[index]) return;
 
     for (let i = 0; i < index; i++) {
@@ -158,7 +132,6 @@ class Device extends Component {
     actionsToTrack[index] = true;
 
     this.setState({actionsToTrack});
-    console.log(actionsToTrack);
   }
 
   checkActionsCompleted() {
@@ -181,8 +154,7 @@ class Device extends Component {
 
   handleMouseActions() {
     const {clientX, clientY, mouseDown} = this.state;
-    const balls = this.state.balls.slice();
-    const { magnet, disk } = this.state;
+    const { magnet, balls } = this.state;
 
     let hovering = false;
 
@@ -200,60 +172,67 @@ class Device extends Component {
 
     if (hovering) this.hoverOn();
     else this.hoverOff();
+  }
 
+  static checkBallCollision(ball1, ball2) {
+    if (ball1.phi > ball2.phi) {
+      if (ball1.physicsBlocked) ball2.setUserAngle(ball1.phi);
+      else if (ball2.physicsBlocked) ball1.setUserAngle(ball2.phi);
+      else ball1.setAngle(ball2.phi);
+      return true;
+    } else return false;
+    // return Math.sqrt((ball1.cx-ball2.cx)**2+(ball1.cy-l2.cy)**2) <= ball1.R + ball2.R;
+  }
+
+  static handleBallCollision(ball1, ball2) {
+    const [m1, v1] = [ball1.m, ball1.v];
+    const [m2, v2] = [ball2.m, ball2.v];
+    // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
+    // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
+
+    const k = 0.95;
+    let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
+    let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
+
+    [ball1.v, ball2.v] = [u1, u2];
+  }
+
+  static checkMagnetAndBallRightCollision(magnet, ball) {
+    return magnet.phi + magnet.boundAngle >= ball.phi - ball.boundAngle*2;
   }
 
   update(t) {
-    // const {clientX, clientY, mouseDown} = this.state;
+    const { magnet, disk, balls } = this.state;
 
-    const balls = this.state.balls.slice();
-    const { magnet, disk } = this.state;
+    if (this.checkActionsCompleted()) this.startAngleTracking();
+
+    if (this.state.angleTracking && balls[1].isMovingLeft && balls[1].wasMovingRight) {
+      this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].maxRightPhi);
+      this.stopAngleTracking();
+    }
+
+    disk.update(balls[0].maxLeftPhi, balls[1].maxRightPhi);
+
+    balls.forEach(ball => ball.update());
+
+    if (balls[0].physicsBlocked && balls[0].phi > balls[1]) {
+      console.log(balls[0].phi);
+      balls[1].setUserAngle(balls[0].phi);
+    }
 
     if (Device.checkBallCollision(balls[0], balls[1])) {
       Device.handleBallCollision(balls[0], balls[1]);
+      // balls.forEach(ball => ball.update());
       this.completeActionToTrack('hit');
     }
 
-    // let hovering = false;
-    //
-    // if (magnet.pointOver(clientX, clientY)) {
-    //   hovering = true;
-    //   if (mouseDown) this.dragAndDrop(magnet);
-    // }
-
     if (this.state.magnetTurnedOn && Device.checkMagnetAndBallRightCollision(magnet, balls[0])) {
-      balls[0].setAngle(magnet.ballCollisionRightAngle);
+      balls[0].setUserAngle(magnet.ballCollisionRightAngle);
       balls[0].magnetBlock();
       this.completeActionToTrack('magnet');
     }
 
-    if (this.checkActionsCompleted()) this.startAngleTracking();
-
-    // console.log(balls[1].maxPhi);
-
-    if (this.state.angleTracking && balls[1].phi < balls[1].prevPhi) {
-      // const phi = balls[1].maxPhi;
-      // console.log(balls[1].maxPhi);
-      this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].prevPhi);
-      this.stopAngleTracking();
-    }
-
-    balls.forEach(ball => {
-      // if (ball.pointOver(clientX, clientY)) {
-      //   hovering = true;
-      //   if (mouseDown) this.dragAndDrop(ball);
-      // }
-      ball.update(t);
-    });
-
-    // disk.update(magnet.ballCollisionRightAngle, balls[1].phi);
-    disk.update(balls[0].maxLeftPhi, balls[1].maxRightPhi);
-
-    // if (hovering) this.hoverOn();
-    // else this.hoverOff();
     this.handleMouseActions();
-
-    this.setState({balls});
   }
 
   draw = (t) => {
@@ -273,40 +252,25 @@ class Device extends Component {
     requestAnimationFrame(this.draw);
   };
 
+  stopBalls = () => {
+    const balls = this.state.balls.slice();
+    balls.forEach(ball => {
+      if (ball.physicsBlocked || ball.userBlocked) return;
+      ball.reset();
+    });
+    this.setState(balls);
+  };
+
   render() {
     return (
       <div className={'Device'}>
-        <canvas ref={"canvas"} width={this.width} height={this.height} style={{zIndex: 1}}>HTML5 support is required to run this app</canvas>
+        <canvas ref={"canvas"} width={this.width} height={this.height} style={{zIndex: 1}}>HTML5 support is required to
+          run this app
+        </canvas>
         <Col className={'unselectable m-0 p-0 text-center stop-balls'}><span onClick={this.stopBalls}>Остановить</span></Col>
       </div>
     );
   }
-
-  stopBalls = () => {
-    this.state.balls.forEach(ball => {
-      if (ball.physicsBlocked || ball.userBlocked) return;
-      ball.setAngle(0);
-      ball.v = 0
-    });
-  }
 }
-
-// const TestPanel = (props) => {
-//   return (
-//     <Row>
-//       {props.balls && props.balls.map((ball, i) => {
-//         return (
-//           <Col>
-//             <Col>{`ball${i} a: ${ball.a.toFixed(2)}`}</Col>
-//             <Col>{`ball${i} v: ${ball.v.toFixed(2)}`}</Col>
-//             <Col>{`ball${i} phi: ${(ball.phi/Math.PI*180).toFixed(2)}grad`}</Col>
-//             {/*<Col>{`ball${i} cx: ${ball.cx.toFixed(2)}`}</Col>*/}
-//             {/*<Col>{`ball${i} cy: ${ball.cy.toFixed(2)}`}</Col>*/}
-//           </Col>
-//         );
-//       })}
-//     </Row>
-//   );
-// };
 
 export default Device;

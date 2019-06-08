@@ -1,4 +1,12 @@
 import isPointInCircle from "../../../../actions/isPointInCircle";
+import random from "../../../../actions/random";
+
+const tetaAlphaDeg = 2.5;
+const tetaAlphaRad = tetaAlphaDeg/180*Math.PI;
+
+function error() {
+  return tetaAlphaRad*random(-0.5, 0.5);
+}
 
 export default class Ball {
   static g = 2300;
@@ -32,26 +40,35 @@ export default class Ball {
     return isPointInCircle(x, y, this.cx, this.cy, this.R);
   }
 
+  onDragStart(coords) {
+    const {x, y} = coords;
+    this.offsetPhi = this.getPhi(x, y) - this.phi;
+    this.physicsBlocked = true;
+    this.v = 0;
+  }
+
   setPosition(x, y) {
     if (this.userBlocked) return;
-    const phi = -Math.atan2(y, x-this.offsetX) + Math.PI/2;
-    this.setAngle(phi);
+    const phi = this.getPhi(x, y);
+    this.setUserAngle(phi-this.offsetPhi);
+  }
+
+  getPhi(x, y) {
+    return -Math.atan2(y, x-this.offsetX) + Math.PI/2;
   }
 
   setAngle(phi) {
     this.phi = phi;
     this.cx = Math.sin(phi)*this.L + this.offsetX;
     this.cy = Math.cos(phi)*this.L;
-
-    this.leftPoint = {
-      x: this.initLeftPoint.x*Math.cos(phi) + this.initLeftPoint.y*Math.sin(phi) + this.cx,
-      y: -this.initLeftPoint.x*Math.sin(phi) + this.initLeftPoint.y*Math.cos(phi) + this.cy,
-    }
+    // this.maxLeftPhi = this.maxRightPhi = this.phi;
   }
 
-  onDragStart() {
-    this.physicsBlocked = true;
-    this.v = 0;
+  setUserAngle(phi) {
+    this.phi = this.prevPhi = phi;
+    this.cx = Math.sin(phi)*this.L + this.offsetX;
+    this.cy = Math.cos(phi)*this.L;
+    this.maxLeftPhi = this.maxRightPhi = this.phi;
   }
 
   onDrop() {
@@ -69,9 +86,7 @@ export default class Ball {
     this.userBlocked = false;
   }
 
-  vs = [];
-
-  update(t) {
+  update() {
     if (this.physicsBlocked) return;
 
     const {v, phi, beta, omega} = this;
@@ -84,17 +99,31 @@ export default class Ball {
     this.phi = phi + v*Ball.dt;
 
     this.wasMovingRight = this.isMovingRight;
+    this.wasMovingLeft = this.isMovingLeft;
     this.isMovingRight = this.prevPhi < this.phi;
-    if (this.wasMovingRight && !this.isMovingRight) {
-      this.maxRightPhi = this.prevPhi;
-    } else if (!this.wasMovingRight && this.isMovingRight) {
-      this.maxLeftPhi = this.prevPhi;
+    this.isMovingLeft = this.prevPhi > this.phi;
+
+    if (this.wasMovingRight && this.isMovingLeft) {
+      this.maxRightPhi = this.prevPhi + error();
+    } else if (this.wasMovingLeft && this.isMovingRight) {
+      this.maxLeftPhi = this.prevPhi + error();
     }
 
     this.prevPhi = phi;
 
     this.setAngle(this.phi);
 
+  }
+
+  reset() {
+    this.setAngle(0);
+    this.phi = 0;
+    this.prevPhi = 0;
+    this.v = 0;
+    this.maxLeftPhi = 0;
+    this.maxRightPhi = 0;
+    this.wasMovingRight = false;
+    this.isMovingRight = false;
   }
 
   draw(ctx) {
