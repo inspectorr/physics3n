@@ -106,7 +106,7 @@ export default class Magnet {
 
     let radGrad = ctx.createRadialGradient(center.x, center.y, this.height/5, center.x, center.y, this.width*2);
     if (this.active) {
-      radGrad.addColorStop(0, 'rgba(239,255,142)');
+      radGrad.addColorStop(0, 'rgb(239,255,142)');
       radGrad.addColorStop(0.05*Math.random(), 'rgb(239,255,142)');
       radGrad.addColorStop(0.4, 'rgb(200, 35, 51)');
       radGrad.addColorStop(1, 'rgb(200, 35, 51)');

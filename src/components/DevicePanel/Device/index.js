@@ -42,8 +42,11 @@ class Device extends Component {
   create() {
     this.ctx = this.refs.canvas.getContext('2d');
     this.refs.canvas.addEventListener('mousedown', this.onMouseDown);
+    this.refs.canvas.addEventListener('touchstart', this.onMouseDown);
     document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('touchmove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('touchend', this.onMouseUp);
 
     const balls = [
       new Ball(this.ballRadius, this.threadLength, 0, this.width/2-this.ballRadius, this.props.m1),
@@ -59,16 +62,19 @@ class Device extends Component {
     this.setState({ balls, magnet, disk });
   }
 
-  onMouseMove = (event) => {
+  onMouseMove = (e) => {
     const box = this.refs.canvas.getBoundingClientRect();
-    const clientX = event.clientX - box.left;
-    const clientY = event.clientY - box.top;
+    const clientX = (e.targetTouches ? e.targetTouches[0].clientX : e.clientX) - box.left;
+    const clientY = (e.targetTouches ? e.targetTouches[0].clientY : e.clientY) - box.top;
     this.setState({clientX, clientY});
   };
 
-  onMouseDown = (event) => {
+  onMouseDown = (e) => {
     const box = this.refs.canvas.getBoundingClientRect();
-    this.startDragCoords = {x: event.clientX - box.left, y: event.clientY - box.top};
+    this.startDragCoords = {
+      x: (e.targetTouches ? e.targetTouches[0].clientX : e.clientX) - box.left,
+      y: (e.targetTouches ? e.targetTouches[0].clientY : e.clientY) - box.top
+    };
     this.setState({mouseDown: true});
   };
 
@@ -82,16 +88,22 @@ class Device extends Component {
     this.setState({dragging: true});
     obj.onDragStart(this.startDragCoords);
     const handleMove = (e) => {
-      obj.setPosition(e.clientX - box.left, e.clientY - box.top);
+      const x = e.targetTouches ? e.targetTouches[0].clientX : e.clientX;
+      const y = e.targetTouches ? e.targetTouches[0].clientY : e.clientY;
+      obj.setPosition(x - box.left, y - box.top);
     };
     const handleDrop = () => {
       obj.onDrop();
       document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('touchmove', handleMove);
       document.removeEventListener('mouseup', handleDrop);
+      document.removeEventListener('touchend', handleDrop);
       this.setState({dragging: false});
     };
     document.addEventListener('mousemove', handleMove);
+    document.addEventListener('touchmove', handleMove);
     document.addEventListener('mouseup', handleDrop);
+    document.addEventListener('touchend', handleDrop);
   };
 
   hoverOn = () => {

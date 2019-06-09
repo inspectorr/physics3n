@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import './style.css';
-import hints from '../hints.js';
 import Protocol from "./Protocol";
 import DevicePanel from "./DevicePanel";
 import getDataRow from "../actions/getDataRow";

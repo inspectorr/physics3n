@@ -67,6 +67,7 @@ export default class Ball {
   setUserAngle(phi) {
     this.setAngle(phi);
     this.v = 0;
+    this.prevPhi = phi;
     this.maxLeftPhi = this.maxRightPhi = this.phi;
   }
 
@@ -123,6 +124,8 @@ export default class Ball {
     this.maxRightPhi = 0;
     this.wasMovingRight = false;
     this.isMovingRight = false;
+    this.wasMovingLeft = false;
+    this.isMovingLeft = false;
   }
 
   draw(ctx) {
