@@ -1,5 +1,5 @@
-import isPointInPolygon from "../../../../actions/isPointInPolygon";
-import formatAngle from "../../../../actions/formatAngle";
+import isPointInPolygon from "../../../actions/isPointInPolygon";
+import formatAngle from "../../../actions/formatAngle";
 
 export default class Magnet {
   constructor(width, height, offsetX, L, ballBoundAngle, initPhi) {

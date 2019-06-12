@@ -1,4 +1,4 @@
-import formatAngle from "../../../../actions/formatAngle";
+import formatAngle from "../../../actions/formatAngle";
 
 export default class Disk {
   constructor(cx, radius, ballRadius, initLeftAngle, initRightAngle, shift) {
@@ -12,7 +12,7 @@ export default class Disk {
     this.rightAngle = initRightAngle;
   }
 
-  update(leftAngle, rightAngle) {
+  setAngles(leftAngle, rightAngle) {
     this.leftAngle = leftAngle;
     this.rightAngle = rightAngle;
   }

@@ -1,13 +1,7 @@
 .Device {
     position: relative;
     z-index: 10 !important;
-    margin-top: -25px;
-    /*margin-top: -25px;v*/
-    /*background-color: rgba(172, 207, 255, 0.26);*/
-}
-
-.Device canvas {
-    /*z-index: 10 !important;*/
+    margin-top: -16px;
 }
 
 .stop-balls {
@@ -18,9 +12,7 @@
 
 .stop-balls span {
     font-family: 'Russo One', cursive;
-    /*font-size: 18px;*/
     font-size: 22px;
-    /*color: rgba(220,53,69,0.4);*/
     color: rgba(220,53,69,0.65);
     transition: color .25s;
 }
@@ -33,7 +25,6 @@
 .unselectable {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;           /* Non-prefixed version, currently                          not supported by any browser */

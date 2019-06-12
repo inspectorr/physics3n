@@ -6,8 +6,8 @@ import './style.css';
 import Col from "react-bootstrap/Col";
 
 class Device extends Component {
-  width = this.props.width;
-  height = this.props.height;
+  width = 815;
+  height = 460;
 
   topShift = 15;
 
@@ -164,6 +164,35 @@ class Device extends Component {
     this.resetActionsToTrack();
   }
 
+  static checkBallCollision(ball1, ball2) {
+    if (ball1.phi > ball2.phi) {
+      if (ball1.physicsBlocked) ball2.setUserAngle(ball1.phi);
+      else if (ball2.physicsBlocked) ball1.setUserAngle(ball2.phi);
+      else ball1.setAngle(ball2.phi);
+      return true;
+    } else return false;
+
+    // return Math.sqrt((ball1.cx-ball2.cx)**2+(ball1.cy-l2.cy)**2) <= ball1.R + ball2.R;
+  }
+
+  static handleBallCollision(ball1, ball2) {
+    const [m1, v1] = [ball1.m, ball1.v];
+    const [m2, v2] = [ball2.m, ball2.v];
+
+    // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
+    // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
+
+    const k = 0.85;
+    let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
+    let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
+
+    [ball1.v, ball2.v] = [u1, u2];
+  }
+
+  static checkMagnetAndBallRightCollision(magnet, ball) {
+    return magnet.phi + magnet.boundAngle >= ball.phi - ball.boundAngle*2;
+  }
+
   handleMouseActions() {
     const {clientX, clientY, mouseDown} = this.state;
     const { magnet, balls } = this.state;
@@ -186,50 +215,14 @@ class Device extends Component {
     else this.hoverOff();
   }
 
-  static checkBallCollision(ball1, ball2) {
-    if (ball1.phi > ball2.phi) {
-      if (ball1.physicsBlocked) ball2.setUserAngle(ball1.phi);
-      else if (ball2.physicsBlocked) ball1.setUserAngle(ball2.phi);
-      else ball1.setAngle(ball2.phi);
-      return true;
-    } else return false;
-    // return Math.sqrt((ball1.cx-ball2.cx)**2+(ball1.cy-l2.cy)**2) <= ball1.R + ball2.R;
-  }
-
-  static handleBallCollision(ball1, ball2) {
-    const [m1, v1] = [ball1.m, ball1.v];
-    const [m2, v2] = [ball2.m, ball2.v];
-    // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
-    // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
-
-    const k = 0.95;
-    let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
-    let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
-
-    [ball1.v, ball2.v] = [u1, u2];
-  }
-
-  static checkMagnetAndBallRightCollision(magnet, ball) {
-    return magnet.phi + magnet.boundAngle >= ball.phi - ball.boundAngle*2;
-  }
-
   update(t) {
     const { magnet, disk, balls } = this.state;
 
-    if (this.checkActionsCompleted()) this.startAngleTracking();
-
-    if (this.state.angleTracking && balls[1].isMovingLeft && balls[1].wasMovingRight) {
-      this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].maxRightPhi);
-      this.stopAngleTracking();
-    }
-
-    disk.update(balls[0].maxLeftPhi, balls[1].maxRightPhi);
-
+    disk.setAngles(balls[0].maxLeftPhi, balls[1].maxRightPhi);
     balls.forEach(ball => ball.update());
 
     if (Device.checkBallCollision(balls[0], balls[1])) {
       Device.handleBallCollision(balls[0], balls[1]);
-      // balls.forEach(ball => ball.update());
       this.completeActionToTrack('hit');
     }
 
@@ -237,6 +230,13 @@ class Device extends Component {
       balls[0].setUserAngle(magnet.ballCollisionRightAngle);
       balls[0].magnetBlock();
       this.completeActionToTrack('magnet');
+    }
+
+    if (this.checkActionsCompleted()) this.startAngleTracking();
+
+    if (this.state.angleTracking && balls[1].isMovingLeft && balls[1].wasMovingRight) {
+      this.props.addDataRow(magnet.ballCollisionRightAngle, balls[1].maxRightPhi);
+      this.stopAngleTracking();
     }
 
     this.handleMouseActions();

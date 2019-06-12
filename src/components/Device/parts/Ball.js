@@ -1,5 +1,5 @@
-import isPointInCircle from "../../../../actions/isPointInCircle";
-import random from "../../../../actions/random";
+import isPointInCircle from "../../../actions/isPointInCircle";
+import random from "../../../actions/random";
 
 const tetaAlphaDeg = 2.5;
 const tetaAlphaRad = tetaAlphaDeg/180*Math.PI;
@@ -9,9 +9,8 @@ function error() {
 }
 
 export default class Ball {
-  static g = 2300;
+  static g = 2000;
   static dt = 0.02;
-  // a = 0;
   v = 0;
   cx = null;
   cy = null;
@@ -23,13 +22,7 @@ export default class Ball {
     this.phi = initPhi;
     this.offsetX = offsetX;
     this.m = m;
-    // this.beta = 0.01/(2*m/1000);
-    this.beta = 1/10;
-
-    this.initLeftPoint = {
-      x: -this.R,
-      y: 0,
-    };
+    this.beta = 1/20;
 
     this.boundAngle = Math.atan(this.R/this.L);
 
@@ -61,7 +54,6 @@ export default class Ball {
     this.phi = phi;
     this.cx = Math.sin(phi)*this.L + this.offsetX;
     this.cy = Math.cos(phi)*this.L;
-    // this.maxLeftPhi = this.maxRightPhi = this.phi;
   }
 
   setUserAngle(phi) {

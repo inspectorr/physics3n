@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import Device from "./DevicePanel/Device";
 import Controller from "./Controller";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import './style.css';
 import Protocol from "./Protocol";
-import DevicePanel from "./DevicePanel";
-import getDataRow from "../actions/getDataRow";
 import Header from "./Header";
+import Device from "./Device";
+import formatAngle from "../actions/formatAngle";
 
 document.addEventListener('mousedown', (e) => e.preventDefault());
 
@@ -34,22 +33,22 @@ class App extends Component {
 
   addDataRow = (a0, a2) => {
     const data = this.state.data.slice();
-    const row = getDataRow(a0, a2);
+    const row = {a0deg: formatAngle(a0), a2deg: formatAngle(a2)};
     if (data.length === 5) data.shift();
     data.push(row);
     this.setState({data});
   };
 
-  devicePanel = React.createRef();
-  turnOnMagnet = () => this.devicePanel.current.onMagnetTurnOn();
-  turnOffMagnet = () => this.devicePanel.current.onMagnetTurnOff();
+  device = React.createRef();
+  turnOnMagnet = () => this.device.current.onMagnetTurnOn();
+  turnOffMagnet = () => this.device.current.onMagnetTurnOff();
 
   render() {
     return (
       <Container fluid className={"justify-content-center m-0 p-0"}>
         <Header/>
         <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"} style={{height: 435}}>
-          <DevicePanel ref={this.devicePanel} addDataRow={this.addDataRow}/>
+          <Device m1={45} m2={131} ref={this.device} addDataRow={this.addDataRow}/>
           <Col className={"right-panel p-0 m-0"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
             <Info/>
