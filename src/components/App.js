@@ -7,6 +7,7 @@ import './style.css';
 import Protocol from "./Protocol";
 import Header from "./Header";
 import Device from "./Device";
+import CONSTANTS from "../PHYSICS";
 import formatAngle from "../actions/formatAngle";
 
 document.addEventListener('mousedown', (e) => e.preventDefault());
@@ -47,8 +48,8 @@ class App extends Component {
     return (
       <Container fluid className={"justify-content-center m-0 p-0"}>
         <Header/>
-        <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"} style={{height: 435}}>
-          <Device m1={45} m2={131} ref={this.device} addDataRow={this.addDataRow}/>
+        <Row className={"Main mx-auto d-flex justify-content-between flex-nowrap"}>
+          <Device m1={CONSTANTS.m1} m2={CONSTANTS.m2} ref={this.device} addDataRow={this.addDataRow}/>
           <Col className={"right-panel p-0 m-0"}>
             <Controller turnOnMagnet={this.turnOnMagnet} turnOffMagnet={this.turnOffMagnet}/>
             <Info/>

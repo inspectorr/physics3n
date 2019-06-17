@@ -1,16 +1,18 @@
 import isPointInCircle from "../../../actions/isPointInCircle";
 import random from "../../../actions/random";
+import CONSTANTS from '../../../PHYSICS';
+const {tetaAlphaDeg, g, threadLength, integrationStep, dampingFactor} = CONSTANTS;
 
-const tetaAlphaDeg = 2.5;
 const tetaAlphaRad = tetaAlphaDeg/180*Math.PI;
-
 function error() {
   return tetaAlphaRad*random(-0.5, 0.5);
 }
 
+const omega = g / threadLength;
+const beta = dampingFactor;
+const dt = integrationStep;
+
 export default class Ball {
-  static g = 2000;
-  static dt = 0.02;
   v = 0;
   cx = null;
   cy = null;
@@ -18,11 +20,9 @@ export default class Ball {
   constructor(R, L, initPhi, offsetX, m) {
     this.R = R;
     this.L = L;
-    this.omega = Ball.g / L;
     this.phi = initPhi;
     this.offsetX = offsetX;
     this.m = m;
-    this.beta = 1/20;
 
     this.boundAngle = Math.atan(this.R/this.L);
 
@@ -81,14 +81,14 @@ export default class Ball {
   update() {
     if (this.physicsBlocked) return;
 
-    const {v, phi, beta, omega} = this;
+    const {v, phi} = this;
 
     // this.a = -omega*Math.sin(this.phi);
     // this.v +=  this.a*Ball.dt;
     // this.phi += this.v*Ball.dt;
 
-    this.v = v + (-2*beta*v - omega*Math.sin(phi))*Ball.dt;
-    this.phi = phi + v*Ball.dt;
+    this.v = v + (-2*beta*v - omega*Math.sin(phi))*dt;
+    this.phi = phi + v*dt;
 
     this.wasMovingRight = this.isMovingRight;
     this.wasMovingLeft = this.isMovingLeft;

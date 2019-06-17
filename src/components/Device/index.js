@@ -4,6 +4,7 @@ import Ball from "./parts/Ball";
 import Disk from "./parts/Disk";
 import './style.css';
 import Col from "react-bootstrap/Col";
+import CONSTANTS from '../../PHYSICS';
 
 class Device extends Component {
   width = 815;
@@ -182,7 +183,7 @@ class Device extends Component {
     // const u1 = ((m1-m2)*v1 + 2*m2*v2)/(m1+m2);
     // const u2 = ((m2-m1)*v2 + 2*m1*v1)/(m1+m2);
 
-    const k = 0.85;
+    const k = CONSTANTS.recoveryFactor;
     let u1 = (k*m2*(v2-v1) + m1*v1 + m2*v2)/(m1+m2);
     let u2 = (k*m1*(v1-v2) + m1*v1 + m2*v2)/(m1+m2);
 

@@ -1,6 +1,7 @@
 .Main {
     width: 1050px;
     min-width: 1050px;
+    height: 435px;
 }
 
 .right-panel {
@@ -19,12 +20,11 @@
 }
 
 .Info div, .Info sub {
-    /*font-family: 'Press Start 2P', cursive !important;*/
     font-family: 'Russo One', cursive;
 }
 
 body {
-    background-image: url("../images/stars.jpg");
+    background-image: url("../images/stars_cc.jpg");
     -moz-background-size: 100%; /* Firefox 3.6+ */
     -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
     -o-background-size: 100%; /* Opera 9.6+ */

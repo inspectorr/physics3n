@@ -33,8 +33,6 @@ export default class Disk {
     ctx.arcTo(radius + ballRadius, radius, ballRadius+radius, 0, radius);
     ctx.lineTo(radius + ballRadius, -shift);
 
-    // ctx.closePath();
-
     ctx.fillStyle = 'rgb(242, 242, 242)';
     ctx.strokeStyle = 'rgb(170,170,170)';
     ctx.lineWidth = 0.5;
@@ -47,8 +45,6 @@ export default class Disk {
     ctx.font = '24px Russo One';
 
     // left angle
-    // ctx.strokeStyle = '#c41b1b';
-    // ctx.fillStyle = '#c41b1b';
     ctx.strokeStyle = 'rgba(220,53,69,0.76)';
     ctx.fillStyle = 'rgba(220,53,69,0.76)';
     ctx.beginPath();
@@ -68,7 +64,3 @@ export default class Disk {
     ctx.restore();
   }
 }
-
-// function formatAngle(rad) {
-//   return Math.abs(Math.round(rad/Math.PI*180*10)/10).toFixed(1) + '°';
-// }

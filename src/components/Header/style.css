@@ -1,22 +1,13 @@
 .Header {
-    /*color: #011f4b;*/
+    position: relative;
     font-family: 'Russo One', cursive;
     z-index: 20 !important;
     color: white;
     width: 1050px;
     border-bottom-left-radius: 0.3rem;
     border-bottom-right-radius: 0.3rem;
-    /*font-weight: 700;*/
     height: 55px;
-
-    /*font-size: 32px;*/
-    /*background-color: rgba(0,123,255,0.76);*/
-    /*background-color: rgb(220, 53, 69);*/
-    /*background-color: #004e9b;*/
-    /*background-color: #05336E;*/
-    /*background-color: #05336E;*/
     background: linear-gradient(to top, #004e9b 0%, #0064ce 30%, #0064ce 70%, #004e9b 100%);
-    /*background: linear-gradient(to bottom, #075acc 0%, #05336E 100%);*/
     -webkit-box-shadow: 0px 5px 8px -3px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 5px 8px -3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 5px 8px -3px rgba(50, 50, 50, 0.75);
@@ -31,3 +22,22 @@
     font-family: 'Russo One', cursive;
     font-size: 29px;
 }
+
+.info-container {
+    position: absolute;
+    bottom: -27px;
+    left: 5px;
+}
+
+.info-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    transition: 0.1s;
+}
+
+.info-text:hover {
+    cursor: pointer;
+    color: white;
+}
+

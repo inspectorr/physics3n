@@ -78,7 +78,6 @@ export default class Magnet {
   }
 
   draw(ctx) {
-    // console.log(this.phi);
     const {points, center} = this.position;
 
     ctx.save();

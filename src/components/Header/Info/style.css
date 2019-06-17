@@ -1,0 +1,49 @@
+.popup-close {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 40px;
+    position: absolute;
+    right: 5px;
+    top: -5px;
+    transition: 0.1s;
+    line-height: 1;
+}
+
+.popup-close:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.popup-content {
+    font-family: 'Russo One', sans-serif;
+    border: none !important;
+    border-radius: 5px;
+    background: rgba(245, 245, 245, 0.86) !important;
+}
+
+.popup-text {
+    white-space: pre-line;
+    text-align: center;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: lighter;
+    color: #000000;
+}
+
+.hat {
+    font-family: inherit;
+    font-size: 20px;
+    padding: 0;
+    padding-left: 7px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: linear-gradient(to top, #004e9b 0%, #0064ce 30%, #0064ce 70%, #004e9b 100%);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.uni {
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: #363636;
+    margin: 10px 0px;
+}
