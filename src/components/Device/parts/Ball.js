@@ -76,6 +76,10 @@ export default class Ball {
   magnetUnblock() {
     this.physicsBlocked = false;
     this.userBlocked = false;
+
+    // ПОГРЕШНОСТЬ
+    this.setAngle(this.phi + error());
+    this.prevPhi = this.phi;
   }
 
   update() {
@@ -96,9 +100,9 @@ export default class Ball {
     this.isMovingLeft = this.prevPhi > this.phi;
 
     if (this.wasMovingRight && this.isMovingLeft) {
-      this.maxRightPhi = this.prevPhi + error();
+      this.maxRightPhi = this.prevPhi;
     } else if (this.wasMovingLeft && this.isMovingRight) {
-      this.maxLeftPhi = this.prevPhi + error();
+      this.maxLeftPhi = this.prevPhi;
     }
 
     this.prevPhi = phi;

@@ -16,10 +16,10 @@ const Info = () => {
   return (
     <Col className={'Info p-0 mt-2'}>
       <Col className={'p-0'}>Константы эксперимента:</Col>
-      <Col className={'p-0'}>L = (23.9 ± 0.1) см</Col>
-      <Col className={'p-0'}>m<sub>1</sub> = (45 ± 1) г</Col>
-      <Col className={'p-0'}>m<sub>2</sub> = (131 ± 1) г</Col>
-      <Col className={'p-0'}>θ<sub>α</sub> = 2.5°</Col>
+      <Col className={'p-0'}>{`L = (${CONSTANTS.threadLength*100} ± 0.1) см`}</Col>
+      <Col className={'p-0'}>m<sub>1</sub>{` = (${CONSTANTS.m1} ± 1) г`}</Col>
+      <Col className={'p-0'}>m<sub>2</sub>{` = (${CONSTANTS.m2} ± 1) г`}</Col>
+      <Col className={'p-0'}>θ<sub>α</sub>{` = ${CONSTANTS.tetaAlphaDeg}°`}</Col>
     </Col>
   );
 };
